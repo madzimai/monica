@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Account\InboundEmail;
 use Illuminate\Database\Eloquent\Model;
 
