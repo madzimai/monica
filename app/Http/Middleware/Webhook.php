@@ -17,9 +17,9 @@ class Webhook
     {
         $ip = $request->ip();
 
-        $allowed_ips = config('webhook.valid');
+        $allowedIps = config('webhook.valid_ips');
 
-        if ($allowed_ips->contains($ip)) {
+        if ($allowedIps->contains($ip)) {
             // IP is on the whitlist for webhooks
             return $next($request);
         } else {

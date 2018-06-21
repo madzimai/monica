@@ -13,6 +13,7 @@ use App\Mail\StayInTouchEmail;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Models\Account\InboundEmail;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -354,7 +355,7 @@ class Contact extends Model
      */
     public function inboundEmails()
     {
-        return $this->hasMany('App\InboundEmail', 'contact_id');
+        return $this->belongsToMany(InboundEmail::class, 'contact_inbound_email')->withPivot('account_id');
     }
 
     /**

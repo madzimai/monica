@@ -13,23 +13,26 @@ class CreateEmailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('inbound_emails', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id');
+            $table->unsignedInteger('account_id');
             $table->datetime('sent');
             $table->mediumText('content');
             $table->string('subject');
             $table->string('to');
             $table->string('from');
             $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
-        Schema::create('contact_emails', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('account_id');
-            $table->integer('email_id');
-            $table->integer('contact_id');
+        Schema::create('contact_inbound_email', function (Blueprint $table) {
+            $table->unsignedInteger('inbound_email_id');
+            $table->unsignedInteger('contact_id');
+            $table->unsignedInteger('account_id');
             $table->timestamps();
+            $table->foreign('inbound_email_id')->references('id')->on('inbound_emails')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
     }
 }

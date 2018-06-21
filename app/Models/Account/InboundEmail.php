@@ -1,8 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Account;
 
 use Carbon\Carbon;
+use App\Models\Contact\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +16,8 @@ class InboundEmail extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected $table = 'inbound_emails';
 
     /**
      * The attributes that are mass assignable.
@@ -42,7 +46,7 @@ class InboundEmail extends Model
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -52,21 +56,7 @@ class InboundEmail extends Model
      */
     public function contacts()
     {
-        return $this->hasMany('App\Contact', 'email_id');
-    }
-
-    /**
-     * Link to a to a contact.
-     *
-     * @param Contact $contact
-     */
-    public function setToContact($contact)
-    {
-        $contact_email = new ContactInboundEmail;
-        $contact_email->account_id = $this->account_id;
-        $contact_email->email_id = $this->id;
-        $contact_email->contact_id = $contact->id;
-        $contact_email->save();
+        return $this->belongsToMany(Contact::class, 'contact_inbound_email')->withPivot('account_id');
     }
 
     public function setSentAttribute($value)
